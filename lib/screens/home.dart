@@ -74,53 +74,69 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget _buildTabBar(List<PeopleModel> peopleList) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        DefaultTabController(
-          length: 1,
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: Row(
-                      children: [
-                        _buildTabText("All", 0),
-                        SizedBox(width: 32),
-                        _buildTabText("API", 1),
-                        SizedBox(width: 32),
-                        _buildTabText("API", 2),
-                      ],
-                    ),
+  Widget _buildTabBar() {
+    return DefaultTabController(
+      length: 1,
+      child: Expanded(
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    _buildTabText("All", 0),
+                    SizedBox(width: 32),
+                    _buildTabText("API", 1),
+                    SizedBox(width: 32),
+                    _buildTabText("API", 2),
+                  ],
+                ),
+                Container(
+                  height: MediaQuery.of(context).size.width * 0.1,
+                  width: MediaQuery.of(context).size.width * 0.1,
+                  decoration: BoxDecoration(
+                    color: Constants.orangeColor,
+                    borderRadius: BorderRadius.circular(8),
                   ),
-                  Container(
-                    height: MediaQuery.of(context).size.width * 0.1,
-                    width: MediaQuery.of(context).size.width * 0.1,
-                    decoration: BoxDecoration(
-                      color: Constants.orangeColor,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: IconButton(
-                      icon: Icon(Icons.add, color: Constants.white),
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => AddApi(),
-                          ),
-                        );
-                      },
-                    ),
-                  )
-                ],
-              ),
-              SizedBox(height: 20),
-              _buildCard(peopleList),
-            ],
-          ),
+                  child: IconButton(
+                    icon: Icon(Icons.add, color: Constants.white),
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => AddApi(),
+                        ),
+                      );
+                    },
+                  ),
+                )
+              ],
+            ),
+            SizedBox(height: 20),
+            Expanded(
+                child: TabBarView(children: [
+              if (_selectedTabIndex == 0)
+                BlocBuilder<GetPeppleBloc, GetPeopleState>(
+                  builder: (context, state) {
+                    if (state is LoadingState) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                    if (state is PeopleLoadedState) {
+                      if (state.peopleList.data.isNotEmpty) {
+                        return _buildCardList(state.peopleList.data);
+                      } else {
+                        return Text("No data available");
+                      }
+                    }
+                    return Container();
+                  },
+                ),
+              if (_selectedTabIndex == 1) _buildTabAPI(),
+              if (_selectedTabIndex == 2) _buildTabAPI(),
+            ])),
+          ],
         ),
-      ],
+      ),
     );
   }
 
@@ -164,44 +180,40 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget _buildCard(List<PeopleModel> peopleList) {
+  Widget _buildCardList(List<PeopleModel> peopleList) {
     // Filter the people list based on the search query.
     List<PeopleModel> filteredList = peopleList.where((person) {
       return person.name.toLowerCase().contains(_searchQuery.toLowerCase());
     }).toList();
 
-    return SizedBox(
-      height: MediaQuery.of(context).size.height,
-      child: TabBarView(
-        children: [
-          if (_selectedTabIndex == 0 ||
-              _selectedTabIndex == 1 ||
-              _selectedTabIndex == 2)
-            ListView.builder(
-              itemCount: filteredList.length,
-              itemBuilder: (context, index) {
-                final person = filteredList[index];
-                return InkWell(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => DetailsApiPage(
-                          person: person,
-                        ),
-                      ),
-                    );
-                  },
-                  child: CustomCard(
-                    name: person.name,
-                    api: person.api,
-                    imageUrl: person.imageUrl,
-                  ),
-                );
-              },
-            ),
-        ],
-      ),
+    return ListView.builder(
+      itemCount: filteredList.length,
+      itemBuilder: (context, index) {
+        final person = filteredList[index];
+        return InkWell(
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => DetailsApiPage(
+                  person: person,
+                ),
+              ),
+            );
+          },
+          child: CustomCard(
+            name: person.name,
+            api: person.api,
+            imageUrl: person.imageUrl,
+          ),
+        );
+      },
     );
+  }
+
+  Widget _buildTabAPI() {
+    return Center(
+        child: Text('Content of API tab',
+            style: TextStyle(color: Constants.white)));
   }
 
   @override
@@ -211,39 +223,23 @@ class _HomeState extends State<Home> {
       backgroundColor: Constants.backgroundColor,
       appBar: CustomAppBar(),
       body: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'API Translation',
-                style: TextStyle(
-                  color: Constants.white,
-                  fontSize: screenWidth * 0.06,
-                  fontWeight: FontWeight.bold,
-                ),
+        padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'API Translation',
+              style: TextStyle(
+                color: Constants.white,
+                fontSize: screenWidth * 0.06,
+                fontWeight: FontWeight.bold,
               ),
-              SizedBox(height: 20),
-              _buildSearchBox(),
-              SizedBox(height: 20),
-              BlocBuilder<GetPeppleBloc, GetPeopleState>(
-                builder: (context, state) {
-                  if (state is LoadingState) {
-                    return Center(child: CircularProgressIndicator());
-                  }
-                  if (state is PeopleLoadedState) {
-                    if (state.peopleList.data.isNotEmpty) {
-                      return _buildTabBar(state.peopleList.data);
-                    } else {
-                      return Text("No data available");
-                    }
-                  }
-                  return Center(child: Text("Error"));
-                },
-              ),
-            ],
-          ),
+            ),
+            SizedBox(height: 20),
+            _buildSearchBox(),
+            SizedBox(height: 20),
+            _buildTabBar(),
+          ],
         ),
       ),
     );

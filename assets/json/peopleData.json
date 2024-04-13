@@ -1,22 +1,39 @@
 [
     {
+        "id": "1",
         "name": "Alice",
-        "description": "Description for Alice",
-        "imageUrl": "https://via.placeholder.com/150"
+        "api": "https://jsonplaceholder.typicode.com/posts",
+        "phone": "123-456-7890",
+        "address": "1234 Elm St",
+        "email": "alice@gmail.com",
+        "imageUrl": "https://cdn.pixabay.com/photo/2017/07/18/23/23/user-2517433_1280.png"
     },
     {
+        "id": "2",
         "name": "Bob",
-        "description": "Description for Bob",
-        "imageUrl": "https://via.placeholder.com/150"
+        "api": "https://jsonplaceholder.typicode.com/users",
+        "phone": "987-654-3210",
+        "address": "5678 Maple St",
+        "email": "bob@example.com",
+        "imageUrl": "https://cdn.pixabay.com/photo/2017/07/18/23/23/user-2517433_1280.png"
     },
     {
-        "name": "Bob",
-        "description": "Description for Bob",
-        "imageUrl": "https://via.placeholder.com/150"
+        "id": "3",
+        "name": "Charlie",
+        "api": "https://jsonplaceholder.typicode.com/comments",
+        "phone": "555-555-5555",
+        "address": "91011 Oak St",
+        "email": "Charlie@example.com",
+        "imageUrl": "https://cdn.pixabay.com/photo/2017/07/18/23/23/user-2517433_1280.png"
     },
     {
-        "name": "Bob",
-        "description": "Description for Bob",
-        "imageUrl": "https://via.placeholder.com/150"
+        "id": "4",
+        "name": "David",
+        "api": "https://jsonplaceholder.typicode.com/albums",
+        "phone": "123-123-1234",
+        "address": "121314 Pine St",
+        "email": "David@example.com",
+        "imageUrl": "https://cdn.pixabay.com/photo/2017/07/18/23/23/user-2517433_1280.png"
     }
+    
 ]

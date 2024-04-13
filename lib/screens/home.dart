@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:iapp_flutter/bloc/bloc/get_people_bloc.dart';
+import 'package:iapp_flutter/bloc/get_people/get_people_bloc.dart';
 import 'package:iapp_flutter/models/people.dart';
 import 'package:iapp_flutter/screens/people/addApi.dart';
 import 'package:iapp_flutter/screens/people/detailsApi.dart';

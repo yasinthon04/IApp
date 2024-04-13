@@ -24,7 +24,7 @@ class _HomeState extends State<Home> {
   String _searchQuery = "";
   int _selectedTabIndex = 0;
   PeopleModel? peopleModel;
-  
+  TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
@@ -32,8 +32,15 @@ class _HomeState extends State<Home> {
     context.read<GetPeppleBloc>().add(LoadingPeopleEvent());
   }
 
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
   Widget _buildSearchBox() {
     return TextField(
+      controller: _searchController,
       onChanged: (value) {
         setState(() {
           _searchQuery = value;
@@ -42,7 +49,9 @@ class _HomeState extends State<Home> {
       style: TextStyle(color: Colors.white),
       decoration: InputDecoration(
         hintText: "Search...",
-        hintStyle: TextStyle(color: Colors.grey[500], fontSize: MediaQuery.of(context).size.width * 0.03),
+        hintStyle: TextStyle(
+            color: Colors.grey[500],
+            fontSize: MediaQuery.of(context).size.width * 0.03),
         fillColor: Constants.searchColor,
         filled: true,
         prefixIcon: Icon(Icons.search, color: Colors.grey[500]),
@@ -52,6 +61,7 @@ class _HomeState extends State<Home> {
                 onPressed: () {
                   setState(() {
                     _searchQuery = "";
+                    _searchController.clear();
                   });
                 },
               )
@@ -144,7 +154,7 @@ class _HomeState extends State<Home> {
                 width: 5,
                 height: 5,
                 decoration: BoxDecoration(
-                  color: Constants.orangeColor, 
+                  color: Constants.orangeColor,
                   shape: BoxShape.circle,
                 ),
               ),
@@ -155,16 +165,22 @@ class _HomeState extends State<Home> {
   }
 
   Widget _buildCard(List<PeopleModel> peopleList) {
+    // Filter the people list based on the search query.
+    List<PeopleModel> filteredList = peopleList.where((person) {
+      return person.name.toLowerCase().contains(_searchQuery.toLowerCase());
+    }).toList();
+
     return SizedBox(
       height: MediaQuery.of(context).size.height,
       child: TabBarView(
         children: [
-          if (_selectedTabIndex == 0 || _selectedTabIndex == 1 || _selectedTabIndex == 2)
+          if (_selectedTabIndex == 0 ||
+              _selectedTabIndex == 1 ||
+              _selectedTabIndex == 2)
             ListView.builder(
-              itemCount: peopleList.length,
-              physics: NeverScrollableScrollPhysics(),
+              itemCount: filteredList.length,
               itemBuilder: (context, index) {
-                final person = peopleList[index];
+                final person = filteredList[index];
                 return InkWell(
                   onTap: () {
                     Navigator.of(context).push(
@@ -183,13 +199,10 @@ class _HomeState extends State<Home> {
                 );
               },
             ),
-          
         ],
       ),
     );
   }
-
- 
 
   @override
   Widget build(BuildContext context) {

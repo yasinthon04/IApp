@@ -16,7 +16,7 @@ class CustomCardApi extends StatelessWidget {
     required this.id,
     required this.title,
     required this.body,
-    this.imageUrl = '',
+    this.imageUrl = 'https://cdn.pixabay.com/photo/2017/07/18/23/23/user-2517433_1280.png',
   }) : super(key: key);
 
   @override
@@ -34,7 +34,6 @@ class CustomCardApi extends StatelessWidget {
               Constants.navColor,
             ],
           ),
-          borderRadius: BorderRadius.circular(8),
         ),
         child: SizedBox(
           height: screenWidth * 0.6,

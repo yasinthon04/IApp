@@ -37,21 +37,27 @@ class _AddApiState extends State<AddApi> {
   Widget _buildTextField(String label, TextEditingController controller) {
     return TextField(
       controller: controller,
-      style: TextStyle(color: Colors.white),
+      style: TextStyle(
+          color: Colors.white,
+          fontSize: MediaQuery.of(context).size.width * 0.03),
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: TextStyle(color: Colors.white),
+        labelStyle: TextStyle(
+            color: Colors.white,
+            fontSize: MediaQuery.of(context).size.width * 0.03),
         filled: true,
         fillColor: Colors.black.withOpacity(0.5),
         border: InputBorder.none,
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(color: Colors.transparent),
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(16),
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(color: Colors.transparent),
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(16),
         ),
+        contentPadding: EdgeInsets.symmetric(
+            vertical: MediaQuery.of(context).size.width * 0.05, horizontal: 20),
         isDense: true,
       ),
     );
@@ -89,7 +95,7 @@ class _AddApiState extends State<AddApi> {
                 Text(
                   'Add API',
                   style: TextStyle(
-                      fontSize: 24,
+                      fontSize: MediaQuery.of(context).size.width * 0.06,
                       fontWeight: FontWeight.bold,
                       color: Constants.white),
                 ),
@@ -112,14 +118,18 @@ class _AddApiState extends State<AddApi> {
             padding: const EdgeInsets.only(bottom: 64),
             child: ElevatedButton(
               onPressed: _submitForm,
-              child: Text('Confirm', style: TextStyle(color: Colors.white)),
+              child: Text('Confirm',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: MediaQuery.of(context).size.width * 0.04,
+                  )),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Constants.orangeColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
                 padding: EdgeInsets.symmetric(
-                    horizontal: 100, vertical: textButtonPadding),
+                    horizontal: MediaQuery.of(context).size.width * 0.2, vertical: textButtonPadding),
               ),
             ),
           ),
@@ -155,7 +165,6 @@ class _AddApiState extends State<AddApi> {
     _phoneController.clear();
     _addressController.clear();
     _emailController.clear();
-
   }
 }
 

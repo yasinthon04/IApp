@@ -88,7 +88,6 @@ class CustomCard extends StatelessWidget {
               Constants.navColor,
             ],
           ),
-          borderRadius: BorderRadius.circular(8),
         ),
         child: SizedBox(
           height: screenWidth * 0.45,
@@ -105,12 +104,20 @@ class CustomCard extends StatelessWidget {
                           imageUrl.isNotEmpty ? NetworkImage(imageUrl) : null,
                       radius: screenWidth * 0.08,
                     ),
-                    IconButton(
-                      iconSize: screenWidth * 0.06,
-                      icon: const Icon(Icons.delete, color: Colors.red),
-                      onPressed: () {
-                        _showDeleteConfirmationDialog(context);
-                      },
+                    Container(
+                      height: screenWidth * 0.1,
+                      width: screenWidth * 0.1,
+                       decoration: BoxDecoration(
+                        color: Colors.grey.shade300,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: IconButton(
+                        iconSize: screenWidth * 0.06,
+                        icon: const Icon(Icons.delete_outline, color: Colors.red),
+                        onPressed: () {
+                          _showDeleteConfirmationDialog(context);
+                        },
+                      ),
                     ),
                   ],
                 ),
@@ -136,16 +143,24 @@ class CustomCard extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    IconButton(
-                      iconSize: screenWidth * 0.06,
-                      icon: const Icon(Icons.edit, color: Colors.blue),
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => EditApi(),
-                          ),
-                        );
-                      },
+                    Container(
+                      height: screenWidth * 0.1,
+                      width: screenWidth * 0.1,
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade300,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: IconButton(
+                        iconSize: screenWidth * 0.06,
+                        icon:  Icon(Icons.edit_outlined, color: Colors.grey.shade900),
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => EditApi(),
+                            ),
+                          );
+                        },
+                      ),
                     ),
                   ],
                 ),

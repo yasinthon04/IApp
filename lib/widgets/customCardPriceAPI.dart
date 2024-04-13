@@ -6,12 +6,9 @@ import 'package:iapp_flutter/widgets/constants.dart';
 class CustomCardPriceApi extends StatelessWidget {
   final int userId;
 
-  final String imageUrl;
-
   const CustomCardPriceApi({
     Key? key,
     required this.userId,
-    this.imageUrl = '',
   }) : super(key: key);
 
   @override
@@ -40,6 +37,7 @@ class CustomCardPriceApi extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.all(screenWidth * 0.03),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Row(
@@ -50,7 +48,7 @@ class CustomCardPriceApi extends StatelessWidget {
                         Icon(
                           Icons.account_balance_wallet,
                           color: Constants.orangeColor,
-                          size: 35,
+                          size: screenWidth * 0.06,
                         ),
                         SizedBox(width: screenWidth * 0.05),
                         Text(

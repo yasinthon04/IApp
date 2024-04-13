@@ -24,6 +24,7 @@ class _HomeState extends State<Home> {
   String _searchQuery = "";
   int _selectedTabIndex = 0;
   PeopleModel? peopleModel;
+  
 
   @override
   void initState() {
@@ -41,7 +42,7 @@ class _HomeState extends State<Home> {
       style: TextStyle(color: Colors.white),
       decoration: InputDecoration(
         hintText: "Search...",
-        hintStyle: TextStyle(color: Colors.grey[500]),
+        hintStyle: TextStyle(color: Colors.grey[500], fontSize: MediaQuery.of(context).size.width * 0.03),
         fillColor: Constants.searchColor,
         filled: true,
         prefixIcon: Icon(Icons.search, color: Colors.grey[500]),
@@ -85,7 +86,8 @@ class _HomeState extends State<Home> {
                     ),
                   ),
                   Container(
-                    height: 40,
+                    height: MediaQuery.of(context).size.width * 0.1,
+                    width: MediaQuery.of(context).size.width * 0.1,
                     decoration: BoxDecoration(
                       color: Constants.orangeColor,
                       borderRadius: BorderRadius.circular(8),
@@ -132,7 +134,7 @@ class _HomeState extends State<Home> {
                 color: isSelected
                     ? Constants.orangeColor
                     : Constants.greyTextColor,
-                fontSize: 16,
+                fontSize: MediaQuery.of(context).size.width * 0.03,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -191,6 +193,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Constants.backgroundColor,
       appBar: CustomAppBar(),
@@ -204,7 +207,7 @@ class _HomeState extends State<Home> {
                 'API Translation',
                 style: TextStyle(
                   color: Constants.white,
-                  fontSize: 32,
+                  fontSize: screenWidth * 0.06,
                   fontWeight: FontWeight.bold,
                 ),
               ),

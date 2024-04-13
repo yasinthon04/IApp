@@ -44,11 +44,12 @@ class _ListApiState extends State<ListApi> {
     return Scaffold(
       backgroundColor: Constants.backgroundColor,
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(24, 100, 24, 0),
+        padding: const EdgeInsets.fromLTRB(24, 0, 24, 0),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const SizedBox(height: 48),
               Text(
                 'SUM API',
                 style: TextStyle(

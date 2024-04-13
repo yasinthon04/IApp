@@ -16,7 +16,7 @@ class _PriceApiState extends State<PriceApi> {
   @override
   void initState() {
     super.initState();
-    context.read<GetApiBloc>().add(LoadingApiEvent());
+    context.read<GetApiBloc>().add(LoadApiEvent());
   }
 
   Widget _buildCard(List<ApiModel> apiList) {

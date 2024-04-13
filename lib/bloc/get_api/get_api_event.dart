@@ -7,6 +7,6 @@ abstract class GetApiEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
-class LoadingApiEvent extends GetApiEvent {
+class LoadApiEvent extends GetApiEvent {
 
 }

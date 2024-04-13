@@ -157,7 +157,7 @@ class _HomeState extends State<Home> {
       height: MediaQuery.of(context).size.height,
       child: TabBarView(
         children: [
-          if (_selectedTabIndex == 0)
+          if (_selectedTabIndex == 0 || _selectedTabIndex == 1 || _selectedTabIndex == 2)
             ListView.builder(
               itemCount: peopleList.length,
               physics: NeverScrollableScrollPhysics(),
@@ -181,19 +181,13 @@ class _HomeState extends State<Home> {
                 );
               },
             ),
-          if (_selectedTabIndex == 1) _buildTabAPI(),
-          if (_selectedTabIndex == 2) _buildTabAPI(),
+          
         ],
       ),
     );
   }
 
-  Widget _buildTabAPI() {
-    return const Text(
-      'API',
-      style: TextStyle(color: Constants.white),
-    );
-  }
+ 
 
   @override
   Widget build(BuildContext context) {

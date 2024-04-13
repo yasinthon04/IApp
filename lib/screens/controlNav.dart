@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:iapp_flutter/screens/cart.dart';
+import 'package:iapp_flutter/screens/priceApi.dart';
 import 'package:iapp_flutter/screens/home.dart';
-import 'package:iapp_flutter/screens/sumApi.dart';
+import 'package:iapp_flutter/screens/listApi.dart';
 import 'package:iapp_flutter/widgets/constants.dart';
 
 class ControlNav extends StatefulWidget {
@@ -14,8 +14,8 @@ class ControlNav extends StatefulWidget {
 class _ControlNavState extends State<ControlNav> {
   List<Widget> pages = [
     Home(),
-    SumApiPage(),
-    CartPage(),
+    ListApi(),
+    PriceApi(),
   ];
   int currentIndex = 0;
 

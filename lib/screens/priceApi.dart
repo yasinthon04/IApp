@@ -3,14 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iapp_flutter/bloc/get_api/get_api_bloc.dart';
 import 'package:iapp_flutter/models/api.dart';
 import 'package:iapp_flutter/widgets/constants.dart';
-import 'package:iapp_flutter/widgets/customCardAPI.dart';
+import 'package:iapp_flutter/widgets/customCardPriceAPI.dart';
 
-class SumApiPage extends StatefulWidget {
+class PriceApi extends StatefulWidget {
   @override
-  _SumApiPageState createState() => _SumApiPageState();
+  State<PriceApi> createState() => _PriceApiState();
 }
 
-class _SumApiPageState extends State<SumApiPage> {
+class _PriceApiState extends State<PriceApi> {
   ApiModel? apiModel;
 
   @override
@@ -20,19 +20,24 @@ class _SumApiPageState extends State<SumApiPage> {
   }
 
   Widget _buildCard(List<ApiModel> apiList) {
+    List<ApiModel> filteredList = [];
+    Set<int> userIds = {1, 2}; // Specify the userIds
+    for (var api in apiList) {
+      if (userIds.contains(api.userId) && !filteredList.any((item) => item.userId == api.userId)) {
+        filteredList.add(api);
+      }
+    }
+
     return ListView.builder(
-      itemCount: apiList.length,
+      itemCount: filteredList.length,
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
-        final api = apiList[index];
+        final api = filteredList[index];
         return InkWell(
           onTap: () {},
-          child: CustomCardApi(
+          child: CustomCardPriceApi(
             userId: api.userId,
-            id: api.id,
-            title: api.title,
-            body: api.body,
           ),
         );
       },
@@ -44,19 +49,11 @@ class _SumApiPageState extends State<SumApiPage> {
     return Scaffold(
       backgroundColor: Constants.backgroundColor,
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(24, 100, 24, 0),
+        padding: const EdgeInsets.all(24),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'SUM API',
-                style: TextStyle(
-                  fontSize: 24,
-                  color: Constants.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
               BlocBuilder<GetApiBloc, GetApiState>(
                 builder: (context, state) {
                   if (state is LoadingState) {
@@ -64,7 +61,7 @@ class _SumApiPageState extends State<SumApiPage> {
                       child: CircularProgressIndicator(),
                     );
                   } else if (state is ApiLoadedState) {
-                    return _buildCard(state.apiList.data); 
+                    return _buildCard(state.apiList.data);
                   } else if (state is GetApiError) {
                     return const Center(
                       child: Text(

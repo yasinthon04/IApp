@@ -9,6 +9,10 @@ class Constants {
   static const Color backgroundColor= Color(0xFF0d191f);
   static const Color navColor = Color(0xFF13191d);
   static const Color orangeColor = Color(0xFFce7440);
+  static const Color searchColor = Color(0xFF121e24);
+  static const Color textColor = Color(0xFF262e36);
+  static const Color greyTextColor = Color(0xFF8A8A8A);
+  static const Color white = Color(0xFFFFFFFF);
   
   static const Color redTextColor = Color(0xFFD92D20);
   static const Color redButtonColor = Color(0xFFDF3C30);

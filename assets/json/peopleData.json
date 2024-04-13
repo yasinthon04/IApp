@@ -1,0 +1,22 @@
+[
+    {
+        "name": "Alice",
+        "description": "Description for Alice",
+        "imageUrl": "https://via.placeholder.com/150"
+    },
+    {
+        "name": "Bob",
+        "description": "Description for Bob",
+        "imageUrl": "https://via.placeholder.com/150"
+    },
+    {
+        "name": "Bob",
+        "description": "Description for Bob",
+        "imageUrl": "https://via.placeholder.com/150"
+    },
+    {
+        "name": "Bob",
+        "description": "Description for Bob",
+        "imageUrl": "https://via.placeholder.com/150"
+    }
+]

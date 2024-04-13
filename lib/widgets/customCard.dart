@@ -15,67 +15,77 @@ class CustomCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Get screen size
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Card(
-      color: Constants.navColor,
-      child: SizedBox(
-        height: screenWidth * 0.5, // Responsive height based on screen width
-        child: Padding(
-          padding: EdgeInsets.all(screenWidth * 0.05), // Responsive padding
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CircleAvatar(
-                    backgroundImage:
-                        imageUrl.isNotEmpty ? NetworkImage(imageUrl) : null,
-                    radius: screenWidth * 0.1, 
-                  ),
-                  IconButton(
-                    iconSize: screenWidth * 0.08, 
-                    icon: const Icon(Icons.edit, color: Colors.blue),
-                    onPressed: () {
-                      // Edit action
-                    },
-                  ),
-                ],
-              ),
-              SizedBox(height: screenWidth * 0.02), 
-              Text(
-                name,
-                style: TextStyle(
-                  fontSize: screenWidth * 0.04, 
-                  fontWeight: FontWeight.bold,
-                  color: Constants.white,
-                ),
-              ),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    description,
-                    style: TextStyle(
-                      fontSize:
-                          screenWidth * 0.035, 
-                      color: Constants.white,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  IconButton(
-                    iconSize: screenWidth * 0.08, 
-                    icon: const Icon(Icons.delete, color: Colors.red),
-                    onPressed: () {
-                      // Delete action
-                    },
-                  ),
-                ],
-              ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Constants.navColor.withOpacity(0.9),
+              Constants.navColor,
             ],
+          ),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: SizedBox(
+          height: screenWidth * 0.45,
+          child: Padding(
+            padding: EdgeInsets.all(screenWidth * 0.05),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CircleAvatar(
+                      backgroundImage:
+                          imageUrl.isNotEmpty ? NetworkImage(imageUrl) : null,
+                      radius: screenWidth * 0.08,
+                    ),
+                    IconButton(
+                      iconSize: screenWidth * 0.06,
+                      icon: const Icon(Icons.delete, color: Colors.red),
+                      onPressed: () {
+                        // Delete action
+                      },
+                    ),
+                  ],
+                ),
+                SizedBox(height: screenWidth * 0.02),
+                Text(
+                  name,
+                  style: TextStyle(
+                    fontSize: screenWidth * 0.04,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      description,
+                      style: TextStyle(
+                        fontSize: screenWidth * 0.03,
+                        color: Colors.white,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    IconButton(
+                      iconSize: screenWidth * 0.06,
+                      icon: const Icon(Icons.edit, color: Colors.blue),
+                      onPressed: () {
+                        // Edit action
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

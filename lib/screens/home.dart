@@ -1,6 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:iapp_flutter/bloc/bloc/get_people_bloc.dart';
+import 'package:iapp_flutter/models/people.dart';
+import 'package:iapp_flutter/services/loadJson.dart';
 import 'package:iapp_flutter/widgets/appbar.dart';
 import 'package:iapp_flutter/widgets/constants.dart';
 import 'package:iapp_flutter/widgets/customCard.dart';
@@ -14,6 +21,13 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   String _searchQuery = "";
   int _selectedTabIndex = 0;
+  PeopleModel? peopleModel;
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<GetPeppleBloc>().add(LoadingPeopleEvent());
+  }
 
   Widget _buildSearchBox() {
     return TextField(
@@ -46,19 +60,7 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget _buildTabBar() {
-    final List<Map<String, String>> items = [
-      {
-        'name': 'Alice',
-        'description': 'Description for Alice',
-        'imageUrl': 'https://via.placeholder.com/150'
-      },
-      {
-        'name': 'Bob',
-        'description': 'Description for Bob',
-        'imageUrl': 'https://via.placeholder.com/150'
-      },
-    ];
+  Widget _buildTabBar(List<PeopleModel> peopleList) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -72,40 +74,30 @@ class _HomeState extends State<Home> {
                     child: Row(
                       children: [
                         _buildTabText("All", 0),
-                        SizedBox(width: 48),
+                        SizedBox(width: 32),
                         _buildTabText("API", 1),
-                        SizedBox(width: 48),
+                        SizedBox(width: 32),
                         _buildTabText("API", 2),
                       ],
                     ),
                   ),
-                  IconButton(
-                    icon: Icon(Icons.add, color: Constants.greyTextColor),
-                    onPressed: () {},
-                  ),
+                  Container(
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: Constants.orangeColor,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: IconButton(
+                      icon: Icon(Icons.add, color: Constants.white),
+                      onPressed: () {
+                        // Add your onPressed function here
+                      },
+                    ),
+                  )
                 ],
               ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height,
-                child: TabBarView(
-                  physics: NeverScrollableScrollPhysics(),
-                  children: [
-                    if (_selectedTabIndex == 0)
-                      ListView.builder(
-                        itemCount: items.length,
-                        itemBuilder: (context, index) {
-                          return CustomCard(
-                            name: items[index]['name']!,
-                            description: items[index]['description']!,
-                            imageUrl: items[index]['imageUrl']!,
-                          );
-                        },
-                      ),
-                    if (_selectedTabIndex == 1) _buildTabAPI(),
-                    if (_selectedTabIndex == 2) _buildTabAPI(),
-                  ],
-                ),
-              ),
+              SizedBox(height: 20),
+              _buildCard(peopleList),
             ],
           ),
         ),
@@ -129,10 +121,36 @@ class _HomeState extends State<Home> {
           style: TextStyle(
             // Change the color to orange if the tab is selected, otherwise use the default grey color.
             color: isSelected ? Constants.orangeColor : Constants.greyTextColor,
-            fontSize: 24,
+            fontSize: 16,
             fontWeight: FontWeight.bold,
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildCard(List<PeopleModel> peopleList) {
+    return SizedBox(
+      height: MediaQuery.of(context).size.height,
+      child: TabBarView(
+        physics: NeverScrollableScrollPhysics(),
+        children: [
+          if (_selectedTabIndex == 0)
+            ListView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: peopleList.length,
+              itemBuilder: (context, index) {
+                final person = peopleList[index];
+                return CustomCard(
+                  name: person.name,
+                  description: person.description,
+                  imageUrl: person.imageUrl,
+                );
+              },
+            ),
+          if (_selectedTabIndex == 1) _buildTabAPI(),
+          if (_selectedTabIndex == 2) _buildTabAPI(),
+        ],
       ),
     );
   }
@@ -166,7 +184,21 @@ class _HomeState extends State<Home> {
               SizedBox(height: 20),
               _buildSearchBox(),
               SizedBox(height: 20),
-              _buildTabBar(),
+              BlocBuilder<GetPeppleBloc, GetPeopleState>(
+                builder: (context, state) {
+                  if (state is LoadingState) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                  if (state is PeopleLoadedState) {
+                    if (state.peopleList.data.isNotEmpty) {
+                      return _buildTabBar(state.peopleList.data);
+                    } else {
+                      return Text("No data available");
+                    }
+                  }
+                  return Center(child: Text("Error"));
+                },
+              ),
             ],
           ),
         ),

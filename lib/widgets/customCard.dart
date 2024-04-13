@@ -1,21 +1,80 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:iapp_flutter/screens/people/editApi.dart';
 import 'package:iapp_flutter/widgets/constants.dart';
 
 class CustomCard extends StatelessWidget {
   final String name;
-  final String description;
+  final String api;
   final String imageUrl;
 
   const CustomCard({
     Key? key,
     required this.name,
-    required this.description,
+    required this.api,
     this.imageUrl = '',
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
+
+    void _showDeleteConfirmationDialog(BuildContext context) {
+      showDialog(
+        context: context,
+        barrierDismissible: true,
+        barrierColor: Colors.black.withOpacity(0.1),
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: Colors.black,
+            title: const Text('Delete API',
+                style: TextStyle(color: Constants.white)),
+            content: const Text(
+              'Are you sure you want to delete this item?',
+              style: TextStyle(color: Constants.white),
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('Cancel',
+                    style: TextStyle(color: Constants.white)),
+              ),
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    print("Item deleted");
+                  },
+                  child: TextButton(
+                    onPressed: () {
+                      // Perform the deletion or any other processing
+                      // Then close the dialog
+                      Navigator.of(context).pop();
+                      print("Item deleted"); // For example purposes
+                    },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                          vertical: 6,
+                          horizontal: 16), // Padding inside the container
+                      decoration: BoxDecoration(
+                        color:
+                            Colors.red, // Background color of the container
+                        borderRadius: BorderRadius.circular(
+                            4), // Rounded corners for the container
+                      ),
+                      child: Text(
+                        'Delete',
+                        style: TextStyle(
+                          color: Colors
+                              .white, // Text color changed to white for better contrast
+                        ),
+                      ),
+                    ),
+                  )),
+            ],
+          );
+        },
+      );
+    }
 
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
@@ -50,7 +109,7 @@ class CustomCard extends StatelessWidget {
                       iconSize: screenWidth * 0.06,
                       icon: const Icon(Icons.delete, color: Colors.red),
                       onPressed: () {
-                        // Delete action
+                        _showDeleteConfirmationDialog(context);
                       },
                     ),
                   ],
@@ -67,19 +126,25 @@ class CustomCard extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      description,
-                      style: TextStyle(
-                        fontSize: screenWidth * 0.03,
-                        color: Colors.white,
+                    Flexible(
+                      child: Text(
+                        api,
+                        style: TextStyle(
+                          fontSize: screenWidth * 0.03,
+                          color: Colors.white,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      overflow: TextOverflow.ellipsis,
                     ),
                     IconButton(
                       iconSize: screenWidth * 0.06,
                       icon: const Icon(Icons.edit, color: Colors.blue),
                       onPressed: () {
-                        // Edit action
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => EditApi(),
+                          ),
+                        );
                       },
                     ),
                   ],

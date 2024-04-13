@@ -7,6 +7,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iapp_flutter/bloc/bloc/get_people_bloc.dart';
 import 'package:iapp_flutter/models/people.dart';
+import 'package:iapp_flutter/screens/people/addApi.dart';
+import 'package:iapp_flutter/screens/people/detailsApi.dart';
 import 'package:iapp_flutter/services/loadJson.dart';
 import 'package:iapp_flutter/widgets/appbar.dart';
 import 'package:iapp_flutter/widgets/constants.dart';
@@ -36,6 +38,7 @@ class _HomeState extends State<Home> {
           _searchQuery = value;
         });
       },
+      style: TextStyle(color: Colors.white),
       decoration: InputDecoration(
         hintText: "Search...",
         hintStyle: TextStyle(color: Colors.grey[500]),
@@ -90,7 +93,11 @@ class _HomeState extends State<Home> {
                     child: IconButton(
                       icon: Icon(Icons.add, color: Constants.white),
                       onPressed: () {
-                        // Add your onPressed function here
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => AddApi(),
+                          ),
+                        );
                       },
                     ),
                   )
@@ -116,14 +123,30 @@ class _HomeState extends State<Home> {
       },
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
-        child: Text(
-          tabName,
-          style: TextStyle(
-            // Change the color to orange if the tab is selected, otherwise use the default grey color.
-            color: isSelected ? Constants.orangeColor : Constants.greyTextColor,
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Text(
+              tabName,
+              style: TextStyle(
+                color: isSelected
+                    ? Constants.orangeColor
+                    : Constants.greyTextColor,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 2),
+            if (isSelected)
+              Container(
+                width: 5,
+                height: 5,
+                decoration: BoxDecoration(
+                  color: Constants.orangeColor, 
+                  shape: BoxShape.circle,
+                ),
+              ),
+          ],
         ),
       ),
     );
@@ -133,18 +156,28 @@ class _HomeState extends State<Home> {
     return SizedBox(
       height: MediaQuery.of(context).size.height,
       child: TabBarView(
-        physics: NeverScrollableScrollPhysics(),
         children: [
           if (_selectedTabIndex == 0)
             ListView.builder(
-              physics: NeverScrollableScrollPhysics(),
               itemCount: peopleList.length,
+              physics: NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
                 final person = peopleList[index];
-                return CustomCard(
-                  name: person.name,
-                  description: person.description,
-                  imageUrl: person.imageUrl,
+                return InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => DetailsApiPage(
+                          person: person,
+                        ),
+                      ),
+                    );
+                  },
+                  child: CustomCard(
+                    name: person.name,
+                    api: person.api,
+                    imageUrl: person.imageUrl,
+                  ),
                 );
               },
             ),
